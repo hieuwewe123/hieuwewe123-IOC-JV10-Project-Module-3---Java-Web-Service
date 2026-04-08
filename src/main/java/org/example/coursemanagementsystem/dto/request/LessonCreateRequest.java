@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class LessonCreateRequest {
-    @NotNull
     private Long courseId;
 
     @NotBlank

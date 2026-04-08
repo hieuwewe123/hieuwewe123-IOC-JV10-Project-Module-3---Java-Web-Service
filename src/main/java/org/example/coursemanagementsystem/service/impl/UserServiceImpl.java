@@ -98,17 +98,21 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Bạn không có quyền cập nhật người dùng này");
         }
 
-        if (!user.getUsername().equals(request.getUsername()) && 
+        if (!user.getUsername().equals(request.getUsername()) &&
             userRepository.existsByUsername(request.getUsername())) {
             throw new IllegalArgumentException("Username đã tồn tại");
         }
 
-        if (!user.getEmail().equals(request.getEmail()) && 
+        if (!user.getEmail().equals(request.getEmail()) &&
             userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException("Email đã tồn tại");
         }
 
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user.setFullName(request.getFullName());
+        user.setRole(request.getRole() != null ? request.getRole() : user.getRole());
         user.setUpdatedAt(LocalDateTime.now());
 
         User updatedUser = userRepository.save(user);

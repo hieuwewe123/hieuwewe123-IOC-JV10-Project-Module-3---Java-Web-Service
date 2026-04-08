@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ReviewCreateRequest {
-    @NotNull
     private Long courseId;
 
     private Long studentId;

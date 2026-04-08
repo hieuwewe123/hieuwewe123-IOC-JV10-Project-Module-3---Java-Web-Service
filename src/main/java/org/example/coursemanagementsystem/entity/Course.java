@@ -32,6 +32,7 @@ public class Course {
     private User teacher;
 
     @Column(nullable = false, precision = 10, scale = 2)
+    @Builder.Default
     private BigDecimal price = BigDecimal.ZERO;
 
     @Column(name = "duration_hours")
@@ -39,6 +40,7 @@ public class Course {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
+    @Builder.Default
     private CourseStatus status = CourseStatus.DRAFT;
 
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -49,12 +51,15 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderIndex ASC")
+    @Builder.Default
     private List<Lesson> lessons = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Enrollment> enrollments = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 
     @PrePersist

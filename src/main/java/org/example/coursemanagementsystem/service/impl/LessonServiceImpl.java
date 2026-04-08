@@ -42,6 +42,10 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonResponse createLesson(LessonCreateRequest request) {
+                if (request.getCourseId() == null) {
+                        throw new IllegalArgumentException("courseId là bắt buộc");
+                }
+
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new RuntimeException("Khóa học không tồn tại"));
                 validateTeacherOwnership(course);
@@ -115,11 +119,12 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(() -> new RuntimeException("Bài học không tồn tại"));
         validateTeacherOwnership(lesson.getCourse());
 
-        Course course = courseRepository.findById(request.getCourseId())
-                .orElseThrow(() -> new RuntimeException("Khóa học không tồn tại"));
-        validateTeacherOwnership(course);
-
-        lesson.setCourse(course);
+        if (request.getCourseId() != null) {
+            Course course = courseRepository.findById(request.getCourseId())
+                    .orElseThrow(() -> new RuntimeException("Khóa học không tồn tại"));
+            validateTeacherOwnership(course);
+            lesson.setCourse(course);
+        }
         lesson.setTitle(request.getTitle());
         lesson.setContentUrl(request.getContentUrl());
         lesson.setTextContent(request.getTextContent());

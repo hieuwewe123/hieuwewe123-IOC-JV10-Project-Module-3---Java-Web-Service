@@ -31,6 +31,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewResponse createReview(ReviewCreateRequest request) {
+        if (request.getCourseId() == null) {
+            throw new IllegalArgumentException("courseId là bắt buộc");
+        }
+
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new RuntimeException("Khóa học không tồn tại"));
 
